@@ -1,7 +1,15 @@
 import PropertyCard from '@/components/PropertyCard';
-import properties from '@/properties.json';
+// import data from lodal json: import properties from '@/properties.json';
 
-const PropertiesPage = () => {
+// fetch data from our server:
+import { fetchProperties } from '@/utils/requests';
+
+const PropertiesPage = async () => {
+  const properties = await fetchProperties();
+
+  // Sort properties by Date:
+  properties.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
   return (
     <section className='px-4 py-6'>
       <div className='container-xl lg:container m-auto px-4 py-6'>
