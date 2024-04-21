@@ -5,6 +5,7 @@ export const PropertyAddForm = () => {
   const [mounted, setMounted] = useState(false);
   const [fields, setFields] = useState({
     type: 'Apartment',
+    name: 'Test Apartment',
     description: '',
     location: {
       street: '',
@@ -21,7 +22,7 @@ export const PropertyAddForm = () => {
       monthly: '2000',
       nightly: '',
     },
-    seler_info: {
+    seller_info: {
       name: '',
       email: 'test@test.com',
       phone: '',
@@ -99,7 +100,11 @@ export const PropertyAddForm = () => {
 
   return (
     mounted && (
-      <form>
+      <form
+        action='/api/properties'
+        method='POST'
+        encType='multipart/form-data'
+      >
         <h2 className='text-3xl text-center font-semibold mb-6'>
           Add Property
         </h2>
@@ -503,10 +508,10 @@ export const PropertyAddForm = () => {
           <input
             type='text'
             id='seller_name'
-            name='seller_info.name.'
+            name='seller_info.name'
             className='border rounded w-full py-2 px-3'
             placeholder='Name'
-            value={fields.seler_info.name}
+            value={fields.seller_info.name}
             onChange={handleChange}
           />
         </div>
@@ -524,7 +529,7 @@ export const PropertyAddForm = () => {
             className='border rounded w-full py-2 px-3'
             placeholder='Email address'
             required
-            value={fields.seler_info.email}
+            value={fields.seller_info.email}
             onChange={handleChange}
           />
         </div>
@@ -541,7 +546,7 @@ export const PropertyAddForm = () => {
             name='seller_info.phone'
             className='border rounded w-full py-2 px-3'
             placeholder='Phone'
-            value={fields.seler_info.phone}
+            value={fields.seller_info.phone}
             onChange={handleChange}
           />
         </div>
@@ -561,6 +566,7 @@ export const PropertyAddForm = () => {
             accept='image/*'
             multiple
             onChange={handleImaegChange}
+            required
           />
         </div>
 
