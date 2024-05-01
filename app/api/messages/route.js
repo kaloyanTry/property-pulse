@@ -17,9 +17,21 @@ export const GET = async () => {
       });
     }
     const { userId } = sessionUser;
-    const messages = await Message.find({ recipient: userId })
+
+    const readMessages = await Message.find({ recipient: userId, read: true })
+      .sort({ createdAt: -1 }) // Sort read messages in asc order
       .populate('sender', 'username')
       .populate('property', 'name');
+
+    const unReadMessages = await Message.find({
+      recipient: userId,
+      read: false,
+    })
+      .sort({ createdAt: -1 }) // Sort read messages in asc order
+      .populate('sender', 'username')
+      .populate('property', 'name');
+
+    const messages = [...unReadMessages, ...readMessages];
 
     return new Response(JSON.stringify(messages), { status: 200 });
   } catch (error) {
@@ -29,7 +41,6 @@ export const GET = async () => {
 };
 
 //POST /api/messsages
-
 export const POST = async (request) => {
   try {
     await connectDB();
