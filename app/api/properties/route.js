@@ -8,11 +8,20 @@ export const GET = async (request) => {
   try {
     await connectDB();
 
-    const properties = await Property.find({});
+    const page = request.nextUrl.searchParams.get('page') || 1;
+    const pageSize = request.nextUrl.searchParams.get('pageSize') || 6;
+    const skip = (page - 1) * pageSize;
 
-    // return new Response(JSON.stringify({ message: 'Hello World' }), {
+    const total = await Property.countDocuments({});
 
-    return new Response(JSON.stringify(properties), {
+    const properties = await Property.find({}).skip(skip).limit(pageSize);
+
+    const result = {
+      total,
+      properties,
+    };
+
+    return new Response(JSON.stringify(result), {
       status: 200,
     });
   } catch (error) {
